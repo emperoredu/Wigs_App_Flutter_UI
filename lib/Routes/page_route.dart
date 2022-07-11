@@ -1,0 +1,1 @@
+const mycart= '/shoppingCart/';
