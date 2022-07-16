@@ -1,18 +1,49 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_application_1/itermclass.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
+// provider
 class Cartdata extends ChangeNotifier {
-  addToCart() async {
-    List data = [];
+  List empty = [];
+  List<Cartdateils>? _getiterms = [];
+  List<Cartdateils>? get getAllItems => _getiterms;
+
+  getitermdata() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('details', '34');
+
+    List temp = await jsonDecode(prefs.getString('store') ?? empty.toString());
+
+    _getiterms = temp.map((e) => Cartdateils.fromJson(e)).toList();
+  }
+
+  Future<void> addToCart({image, price, name}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // map that store the data
+    var data = {'image': image, 'price': price, 'name': name};
+    //Cartdateils dateils = Cartdateils();
+    //dateils.image = image;
+   //print(data);
+    //getting  the data stored in the itemdata using the key 'store' and checking if the itemdata is empty
+    //if it is it print an print the empty list and add the new data into the itemdata
+    List dataIterms =
+        await jsonDecode(prefs.getString('store') ?? """$empty""");
+    //dataIterms.add(data);
+    // List dataIterms = [];
+    dataIterms.add(data);
+    print(dataIterms);
+    //storing the data item recived to the dataitem through the prefs
+    prefs.setString('store', jsonEncode(dataIterms));
+    getitermdata();
+    notifyListeners();
   }
 }
 
 class Cartdateils {
   String? image;
-  int? price;
+  String? price;
   String? name;
 
   Cartdateils({this.image, this.price, this.name});

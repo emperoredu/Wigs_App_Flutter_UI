@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/bottomn_av.dart';
+import 'package:flutter_application_1/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+
 
 class CartShopping extends StatefulWidget {
   const CartShopping({Key? key}) : super(key: key);
@@ -11,10 +14,9 @@ class CartShopping extends StatefulWidget {
 
 class _CartShoppingState extends State<CartShopping> {
   int countitem = 20;
- late List<bool>_itemselected;
+  late List<bool> _itemselected;
   int incrimentValue = 0;
 
-  
   @override
   void initState() {
     _itemselected = List<bool>.filled(countitem, false, growable: true);
@@ -57,120 +59,126 @@ class _CartShoppingState extends State<CartShopping> {
         ],
         centerTitle: true,
       ),
-      body: ListView.separated(
-          padding: const EdgeInsets.all(8),
-          itemBuilder: ((context, index) => Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(25),
-                  child: SizedBox(
-                    height: 100,
-                    child: Card(
-                      color: Colors.white,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Container(
-                                height: 80,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
+      body: Consumer<Cartdata>(
+        builder: (context, cart, child) => ListView.separated(
+            padding: const EdgeInsets.all(8),
+            itemBuilder: ((context, index) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(25),
+                    child: SizedBox(
+                      height: 100,
+                      child: Card(
+                        color: Colors.white,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Container(
+                                  height: 80,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Image.asset("${cart.getAllItems![index].image}"
+                                      ),
                                 ),
-                                child: Image.asset('assets/images/Image.jpg'),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Text(
-                                  'Bone Stright',
-                                  style: TextStyle(
-                                      color: Colors.brown,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  'Bone Stright',
-                                ),
-                                Text(
-                                  'Bone Stright',
-                                  style: TextStyle(
-                                      color: Colors.brown,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Checkbox(
-                                  checkColor: Colors.white,
-                                  value: _itemselected[index],
-                                  // ignore: avoid_types_as_parameter_names
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      _itemselected[index]= value!;
-                                    });
-                                  }),
-                              Row(
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  SizedBox(
-                                    width: 60,
-                                    height: 25,
-                                    child: IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            incrimentValue !=0 ? incrimentValue-- :incrimentValue;
-                                          });
-                                        },
-                                        icon: const Icon(
-                                          Icons.remove,
-                                          size: 20,
-                                        )),
+                                  Text(
+                                    '${cart.getAllItems![index].name}',
+                                    style: const TextStyle(
+                                        color: Colors.brown,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                  SizedBox(
-                                      height: 20,
-                                      width: 5,
-                                      child: Text("$incrimentValue")),
-                                  SizedBox(
-                                    width: 30,
-                                    height: 25,
-                                    child: IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            incrimentValue++;
-                                          });
-                                        },
-                                        icon: const Icon(
-                                          Icons.add,
-                                          size: 20,
-                                        )),
+                                  Text(
+                                    '${cart.getAllItems![index].price}',
                                   ),
-                                  const SizedBox(
-                                    width: 10,
-                                  )
+                                  Text(
+                                   '${cart.getAllItems![index].price}',
+                                    style: const TextStyle(
+                                        color: Colors.brown,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ],
-                              )
-                            ],
-                          )
-                        ],
+                              ),
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Checkbox(
+                                    checkColor: Colors.white,
+                                    value: _itemselected[index],
+                                    // ignore: avoid_types_as_parameter_names
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        _itemselected[index] = value!;
+                                      });
+                                    }),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 60,
+                                      height: 25,
+                                      child: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              incrimentValue != 0
+                                                  ? incrimentValue--
+                                                  : incrimentValue;
+                                            });
+                                          },
+                                          icon: const Icon(
+                                            Icons.remove,
+                                            size: 20,
+                                          )),
+                                    ),
+                                    SizedBox(
+                                        height: 20,
+                                        width: 5,
+                                        child: Text("$incrimentValue")),
+                                    SizedBox(
+                                      width: 30,
+                                      height: 25,
+                                      child: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              incrimentValue++;
+                                            });
+                                          },
+                                          icon: const Icon(
+                                            Icons.add,
+                                            size: 20,
+                                          )),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    )
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              )),
-          separatorBuilder: (context, i) => i % 1 == 0
-              ? const Divider()
-              : const Padding(
-                  padding: EdgeInsets.all(10),
-                ),
-          itemCount:  countitem),
+                )),
+            separatorBuilder: (context, i) => i % 1 == 0
+                ? const Divider()
+                : const Padding(
+                    padding: EdgeInsets.all(10),
+                  ),
+            itemCount: cart.getAllItems!.length),
+      ),
       bottomNavigationBar: const BottonNavi(),
     );
   }

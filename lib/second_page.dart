@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/car_shooping.dart';
 import 'package:flutter_application_1/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 import 'itermclass.dart';
 
@@ -68,7 +69,7 @@ class MyBody extends StatelessWidget {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                   Expanded(
+                  Expanded(
                     child: Text(
                       "${products.text}",
                       style: const TextStyle(
@@ -104,50 +105,50 @@ class MyBody extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    
-
-                    
-
-                  },
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        Colors.brown,
-                      ),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50)))),
-                  child: const Text(
-                    'Add to Cart',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Flexible(
-                  fit: FlexFit.loose,
-                  child: IconButton(
+            child: Consumer<Cartdata>(
+              builder: (context, cartdata, child) => Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
                     onPressed: () {
-                    Navigator.push
-                    (
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const CartShopping()));
-                      
-                      
+                      cartdata.addToCart(
+                        image: products.image.toString(),
+                        price: products.cash.toString(),
+                        name: products.text.toString(),
+                      );
                     },
-                    icon: const FaIcon(
-                      FontAwesomeIcons.cartShopping,
-                      size: 25,
-                      color: Colors.brown,
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.brown,
+                        ),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50)))),
+                    child: const Text(
+                      'Add to Cart',
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Flexible(
+                    fit: FlexFit.loose,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CartShopping()));
+                      },
+                      icon: const FaIcon(
+                        FontAwesomeIcons.cartShopping,
+                        size: 25,
+                        color: Colors.brown,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           )
         ],

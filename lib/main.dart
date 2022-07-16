@@ -14,20 +14,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.brown,
-        unselectedWidgetColor: Colors.brown,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<Cartdata>(create: (BuildContext context) => Cartdata())
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          primarySwatch: Colors.brown,
+          unselectedWidgetColor: Colors.brown,
+        ),
+        debugShowCheckedModeBanner: false,
+        home: const MyHomePage(),
+        routes: {
+          mycart: (context) => const CartShopping(),
+        },
       ),
-      debugShowCheckedModeBanner: false,
-      home: ChangeNotifierProvider(
-          create: (BuildContext context) {
-            Cartdata();
-          },
-          child: const MyHomePage()),
-      routes: {
-        mycart: (context) => const CartShopping(),
-      },
     );
-  }
-}
+  }}
